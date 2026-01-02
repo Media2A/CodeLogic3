@@ -420,7 +420,7 @@ public class LibraryManager
                 // Check version requirement
                 if (!string.IsNullOrEmpty(dependency.MinVersion))
                 {
-                    if (!Utilities.SemanticVersion.TryParse(depLibrary.Instance.Manifest.Version, out var installedVersion))
+                    if (!Utilities.SemanticVersion.TryParse(depLibrary.Instance.Manifest.Version, out var installedVersion) || installedVersion is null)
                     {
                         errors.Add(
                             $"Library '{depLibrary.Instance.Manifest.Name}' has invalid version format: '{depLibrary.Instance.Manifest.Version}'"
@@ -428,7 +428,7 @@ public class LibraryManager
                         continue;
                     }
 
-                    if (!Utilities.SemanticVersion.TryParse(dependency.MinVersion, out var requiredVersion))
+                    if (!Utilities.SemanticVersion.TryParse(dependency.MinVersion, out var requiredVersion) || requiredVersion is null)
                     {
                         errors.Add(
                             $"Library '{library.Instance.Manifest.Name}' specifies invalid minimum version for '{dependency.Id}': '{dependency.MinVersion}'"

@@ -105,7 +105,8 @@ public static class CodeLogic
         // Run startup validation
         Console.WriteLine("→ Validating system...");
         var validator = new Utilities.StartupValidator();
-        var validationResult = validator.Validate(_options!.RootDirectory);
+        var rootDirectory = _options!.RootDirectory ?? throw new InvalidOperationException("RootDirectory must not be null.");
+        var validationResult = validator.Validate(rootDirectory);
 
         if (!validationResult.IsSuccess)
         {
