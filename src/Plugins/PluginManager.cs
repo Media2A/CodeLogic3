@@ -15,10 +15,25 @@ public class PluginManager
     private readonly Dictionary<string, LoadedPluginInfo> _plugins = new();
     private readonly FileSystemWatcher? _fileWatcher;
 
+    /// <summary>
+    /// Raised when a plugin is successfully loaded.
+    /// </summary>
     public event Action<string>? OnPluginLoaded;
+
+    /// <summary>
+    /// Raised when a plugin is unloaded.
+    /// </summary>
     public event Action<string>? OnPluginUnloaded;
+
+    /// <summary>
+    /// Raised when a plugin load/unload operation fails.
+    /// </summary>
     public event Action<string, Exception>? OnPluginError;
 
+    /// <summary>
+    /// Creates a plugin manager with optional configuration.
+    /// </summary>
+    /// <param name="options">Plugin manager options, or null to use defaults.</param>
     public PluginManager(PluginOptions? options = null)
     {
         _options = options ?? new PluginOptions();
@@ -323,6 +338,9 @@ public class PluginManager
         }
     }
 
+    /// <summary>
+    /// Disposes the plugin manager and unloads plugins.
+    /// </summary>
     public void Dispose()
     {
         _fileWatcher?.Dispose();
@@ -338,7 +356,18 @@ public class PluginManager
 /// </summary>
 public class PluginOptions
 {
+    /// <summary>
+    /// Base directory where plugin folders live.
+    /// </summary>
     public string PluginsDirectory { get; set; } = "Plugins";
+
+    /// <summary>
+    /// Enables hot reload behavior when plugins change on disk.
+    /// </summary>
     public bool EnableHotReload { get; set; } = true;
+
+    /// <summary>
+    /// Enables filesystem watching for plugin changes.
+    /// </summary>
     public bool WatchForChanges { get; set; } = false;
 }

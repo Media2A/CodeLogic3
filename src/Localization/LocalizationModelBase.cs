@@ -17,8 +17,15 @@ public abstract class LocalizationModelBase
 [AttributeUsage(AttributeTargets.Class)]
 public class LocalizationSectionAttribute : Attribute
 {
+    /// <summary>
+    /// Localization section name used for grouping strings.
+    /// </summary>
     public string SectionName { get; }
 
+    /// <summary>
+    /// Creates a new section attribute.
+    /// </summary>
+    /// <param name="sectionName">Name of the localization section.</param>
     public LocalizationSectionAttribute(string sectionName)
     {
         SectionName = sectionName;
@@ -31,5 +38,8 @@ public class LocalizationSectionAttribute : Attribute
 [AttributeUsage(AttributeTargets.Property)]
 public class LocalizedStringAttribute : Attribute
 {
+    /// <summary>
+    /// Optional description to include in localization templates.
+    /// </summary>
     public string? Description { get; set; }
 }

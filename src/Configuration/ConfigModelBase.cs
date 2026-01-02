@@ -32,9 +32,20 @@ public abstract class ConfigModelBase
 [AttributeUsage(AttributeTargets.Class)]
 public class ConfigSectionAttribute : Attribute
 {
+    /// <summary>
+    /// Configuration section name used in config files.
+    /// </summary>
     public string SectionName { get; }
+
+    /// <summary>
+    /// Configuration schema version.
+    /// </summary>
     public int Version { get; set; } = 1;
 
+    /// <summary>
+    /// Creates a new configuration section attribute.
+    /// </summary>
+    /// <param name="sectionName">Name of the configuration section.</param>
     public ConfigSectionAttribute(string sectionName)
     {
         SectionName = sectionName;
@@ -46,19 +57,37 @@ public class ConfigSectionAttribute : Attribute
 /// </summary>
 public class ConfigValidationResult
 {
+    /// <summary>
+    /// Indicates whether the configuration is valid.
+    /// </summary>
     public bool IsValid { get; set; }
+
+    /// <summary>
+    /// Validation error messages when invalid.
+    /// </summary>
     public List<string> Errors { get; set; } = new();
 
+    /// <summary>
+    /// Creates a valid result with no errors.
+    /// </summary>
     public static ConfigValidationResult Valid()
     {
         return new ConfigValidationResult { IsValid = true };
     }
 
+    /// <summary>
+    /// Creates an invalid result with a set of errors.
+    /// </summary>
+    /// <param name="errors">Validation errors.</param>
     public static ConfigValidationResult Invalid(List<string> errors)
     {
         return new ConfigValidationResult { IsValid = false, Errors = errors };
     }
 
+    /// <summary>
+    /// Creates an invalid result with a single error.
+    /// </summary>
+    /// <param name="error">Validation error.</param>
     public static ConfigValidationResult Invalid(string error)
     {
         return new ConfigValidationResult { IsValid = false, Errors = new List<string> { error } };

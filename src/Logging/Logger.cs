@@ -13,6 +13,13 @@ public class Logger : ILogger
     private readonly LoggingOptions _options;
     private static readonly object _fileLock = new();
 
+    /// <summary>
+    /// Creates a logger scoped to a component and its log directory.
+    /// </summary>
+    /// <param name="componentName">Name of the component emitting logs.</param>
+    /// <param name="componentLogsPath">Directory where component logs are written.</param>
+    /// <param name="minimumLevel">Minimum level written to component logs.</param>
+    /// <param name="options">Logging options controlling output behavior.</param>
     public Logger(
         string componentName,
         string componentLogsPath,
@@ -28,11 +35,34 @@ public class Logger : ILogger
         Directory.CreateDirectory(_componentLogsPath);
     }
 
+    /// <summary>
+    /// Logs a trace-level message.
+    /// </summary>
     public void Trace(string message) => Log(LogLevel.Trace, message);
+
+    /// <summary>
+    /// Logs a debug-level message.
+    /// </summary>
     public void Debug(string message) => Log(LogLevel.Debug, message);
+
+    /// <summary>
+    /// Logs an informational message.
+    /// </summary>
     public void Info(string message) => Log(LogLevel.Info, message);
+
+    /// <summary>
+    /// Logs a warning message.
+    /// </summary>
     public void Warning(string message) => Log(LogLevel.Warning, message);
+
+    /// <summary>
+    /// Logs an error message with an optional exception.
+    /// </summary>
     public void Error(string message, Exception? exception = null) => Log(LogLevel.Error, message, exception);
+
+    /// <summary>
+    /// Logs a critical error message with an optional exception.
+    /// </summary>
     public void Critical(string message, Exception? exception = null) => Log(LogLevel.Critical, message, exception);
 
     private void Log(LogLevel level, string message, Exception? exception = null)
@@ -177,12 +207,43 @@ public class Logger : ILogger
 /// </summary>
 public class LoggingOptions
 {
+    /// <summary>
+    /// Global minimum log level for component logs.
+    /// </summary>
     public LogLevel GlobalLevel { get; set; } = LogLevel.Info;
+
+    /// <summary>
+    /// Enables debug mode and optional centralized logging.
+    /// </summary>
     public bool EnableDebugMode { get; set; } = false;
+
+    /// <summary>
+    /// Writes all log entries to a centralized debug log when enabled.
+    /// </summary>
     public bool CentralizedDebugLog { get; set; } = false;
+
+    /// <summary>
+    /// File name pattern for log file paths.
+    /// </summary>
     public string FileNamePattern { get; set; } = "{date:yyyy}/{date:MM}/{date:dd}/{level}.log";
+
+    /// <summary>
+    /// Enables timestamps in log messages.
+    /// </summary>
     public bool IncludeTimestamps { get; set; } = true;
+
+    /// <summary>
+    /// Timestamp format string for log messages.
+    /// </summary>
     public string TimestampFormat { get; set; } = "yyyy-MM-dd HH:mm:ss.fff";
+
+    /// <summary>
+    /// Enables console logging output.
+    /// </summary>
     public bool EnableConsoleOutput { get; set; } = true;
+
+    /// <summary>
+    /// Minimum log level for console output.
+    /// </summary>
     public LogLevel ConsoleMinimumLevel { get; set; } = LogLevel.Info;
 }

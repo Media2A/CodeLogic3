@@ -22,6 +22,11 @@ public class LocalizationManager : ILocalizationManager
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
     };
 
+    /// <summary>
+    /// Creates a localization manager scoped to a component directory.
+    /// </summary>
+    /// <param name="localizationDirectory">Directory containing localization files.</param>
+    /// <param name="defaultCulture">Default culture to use when none is specified.</param>
     public LocalizationManager(string localizationDirectory, string defaultCulture = "en-US")
     {
         _localizationDirectory = localizationDirectory;
@@ -29,12 +34,19 @@ public class LocalizationManager : ILocalizationManager
         Directory.CreateDirectory(_localizationDirectory);
     }
 
+    /// <summary>
+    /// Registers a localization model type for template generation and loading.
+    /// </summary>
     public void Register<T>() where T : LocalizationModelBase, new()
     {
         var type = typeof(T);
         _registered[type] = true;
     }
 
+    /// <summary>
+    /// Gets the localization instance for a culture, falling back to default if needed.
+    /// </summary>
+    /// <param name="culture">Culture code to retrieve, or null for default.</param>
     public T Get<T>(string? culture = null) where T : LocalizationModelBase, new()
     {
         culture ??= _defaultCulture;
@@ -57,6 +69,10 @@ public class LocalizationManager : ILocalizationManager
             $"Localization type {type.Name} for culture '{culture}' not loaded. Call LoadAsync first.");
     }
 
+    /// <summary>
+    /// Generates localization template files for the given cultures.
+    /// </summary>
+    /// <param name="cultures">List of culture codes to generate templates for.</param>
     public async Task GenerateTemplatesAsync<T>(List<string> cultures) where T : LocalizationModelBase, new()
     {
         foreach (var culture in cultures)
@@ -72,6 +88,10 @@ public class LocalizationManager : ILocalizationManager
         }
     }
 
+    /// <summary>
+    /// Loads localization files for the given cultures into memory.
+    /// </summary>
+    /// <param name="cultures">List of culture codes to load.</param>
     public async Task LoadAsync<T>(List<string> cultures) where T : LocalizationModelBase, new()
     {
         var type = typeof(T);

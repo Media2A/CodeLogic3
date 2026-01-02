@@ -63,10 +63,29 @@ public interface IPlugin : IDisposable
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class PluginManifestAttribute : Attribute
 {
+    /// <summary>
+    /// Unique plugin identifier.
+    /// </summary>
     public required string Id { get; set; }
+
+    /// <summary>
+    /// Plugin display name.
+    /// </summary>
     public required string Name { get; set; }
+
+    /// <summary>
+    /// Plugin version string.
+    /// </summary>
     public required string Version { get; set; }
+
+    /// <summary>
+    /// Optional plugin description.
+    /// </summary>
     public string? Description { get; set; }
+
+    /// <summary>
+    /// Optional plugin author.
+    /// </summary>
     public string? Author { get; set; }
 }
 
@@ -116,15 +135,54 @@ public class PluginContext
 /// </summary>
 public class LoadedPluginInfo
 {
+    /// <summary>
+    /// Plugin identifier.
+    /// </summary>
     public required string Id { get; init; }
+
+    /// <summary>
+    /// Plugin display name.
+    /// </summary>
     public required string Name { get; init; }
+
+    /// <summary>
+    /// Plugin version string.
+    /// </summary>
     public required string Version { get; init; }
+
+    /// <summary>
+    /// Optional plugin description.
+    /// </summary>
     public string? Description { get; init; }
+
+    /// <summary>
+    /// Optional plugin author.
+    /// </summary>
     public string? Author { get; init; }
+
+    /// <summary>
+    /// Assembly path the plugin was loaded from.
+    /// </summary>
     public required string AssemblyPath { get; init; }
+
+    /// <summary>
+    /// Plugin instance.
+    /// </summary>
     public required IPlugin Instance { get; init; }
+
+    /// <summary>
+    /// Load context used for plugin isolation and unloading.
+    /// </summary>
     public required PluginLoadContext LoadContext { get; init; }
+
+    /// <summary>
+    /// Weak reference used to determine unloadability.
+    /// </summary>
     public WeakReference? WeakReference { get; set; }
+
+    /// <summary>
+    /// Timestamp when the plugin was loaded.
+    /// </summary>
     public DateTime LoadedAt { get; init; }
 }
 
@@ -136,6 +194,10 @@ public class PluginLoadContext : AssemblyLoadContext
 {
     private readonly AssemblyDependencyResolver _resolver;
 
+    /// <summary>
+    /// Creates a collectible load context rooted at the plugin path.
+    /// </summary>
+    /// <param name="pluginPath">Path to the plugin assembly.</param>
     public PluginLoadContext(string pluginPath) : base(name: pluginPath, isCollectible: true)
     {
         _resolver = new AssemblyDependencyResolver(pluginPath);

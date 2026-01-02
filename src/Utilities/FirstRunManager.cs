@@ -14,9 +14,9 @@ public static class FirstRunManager
     /// <summary>
     /// Checks if this is the first run.
     /// </summary>
-    public static bool IsFirstRun()
+    public static bool IsFirstRun(CodeLogicOptions? options = null)
     {
-        var markerPath = GetMarkerPath();
+        var markerPath = GetMarkerPath(options);
         return !File.Exists(markerPath);
     }
 
@@ -97,9 +97,9 @@ public static class FirstRunManager
     /// <summary>
     /// Resets the first-run marker (for testing or re-initialization).
     /// </summary>
-    public static void Reset()
+    public static void Reset(CodeLogicOptions? options = null)
     {
-        var markerPath = GetMarkerPath();
+        var markerPath = GetMarkerPath(options);
         if (File.Exists(markerPath))
         {
             File.Delete(markerPath);
@@ -175,7 +175,7 @@ public static class FirstRunManager
 
     private static async Task CreateMarkerFileAsync(CodeLogicOptions options)
     {
-        var markerPath = GetMarkerPath();
+        var markerPath = GetMarkerPath(options);
         var markerData = new FirstRunMarker
         {
             InitializedAt = DateTime.UtcNow,
@@ -192,8 +192,15 @@ public static class FirstRunManager
         await File.WriteAllTextAsync(markerPath, json);
     }
 
-    private static string GetMarkerPath()
+    private static string GetMarkerPath(CodeLogicOptions? options = null)
     {
+        // Use RootDirectory if provided, otherwise fall back to BaseDirectory
+        if (options != null && !string.IsNullOrEmpty(options.RootDirectory))
+        {
+            var rootPath = options.GetRootPath();
+            return Path.Combine(rootPath, FirstRunMarkerFile);
+        }
+        // Fallback for backward compatibility
         return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, FirstRunMarkerFile);
     }
 }
@@ -203,9 +210,24 @@ public static class FirstRunManager
 /// </summary>
 public class FirstRunResult
 {
+    /// <summary>
+    /// Indicates whether first-run initialization succeeded.
+    /// </summary>
     public bool Success { get; set; }
+
+    /// <summary>
+    /// Indicates whether the host should exit after first-run setup.
+    /// </summary>
     public bool ShouldExit { get; set; }
+
+    /// <summary>
+    /// Error message if initialization failed.
+    /// </summary>
     public string? Error { get; set; }
+
+    /// <summary>
+    /// Number of directories created during initialization.
+    /// </summary>
     public int DirectoriesCreated { get; set; }
 }
 
@@ -214,7 +236,18 @@ public class FirstRunResult
 /// </summary>
 public class FirstRunMarker
 {
+    /// <summary>
+    /// Timestamp when the framework was initialized.
+    /// </summary>
     public DateTime InitializedAt { get; set; }
+
+    /// <summary>
+    /// Framework version recorded at initialization.
+    /// </summary>
     public string Version { get; set; } = "3.0.0";
+
+    /// <summary>
+    /// Root directory name recorded at initialization.
+    /// </summary>
     public string RootDirectory { get; set; } = "CodeLogic";
 }

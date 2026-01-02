@@ -101,10 +101,24 @@ public record LibraryDependency
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class LibraryDependencyAttribute : Attribute
 {
+    /// <summary>
+    /// Identifier of the dependent library.
+    /// </summary>
     public required string Id { get; set; }
+
+    /// <summary>
+    /// Minimum required version, or null for any version.
+    /// </summary>
     public string? MinVersion { get; set; }
+
+    /// <summary>
+    /// Indicates whether the dependency is optional.
+    /// </summary>
     public bool IsOptional { get; set; } = false;
 
+    /// <summary>
+    /// Builds a <see cref="LibraryDependency"/> from this attribute.
+    /// </summary>
     public LibraryDependency ToDependency()
     {
         return new LibraryDependency
@@ -122,13 +136,40 @@ public class LibraryDependencyAttribute : Attribute
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class LibraryManifestAttribute : Attribute
 {
+    /// <summary>
+    /// Library identifier (e.g., "mysql2").
+    /// </summary>
     public required string Id { get; set; }
+
+    /// <summary>
+    /// Display name for the library.
+    /// </summary>
     public required string Name { get; set; }
+
+    /// <summary>
+    /// Library version string.
+    /// </summary>
     public required string Version { get; set; }
+
+    /// <summary>
+    /// Optional library description.
+    /// </summary>
     public string? Description { get; set; }
+
+    /// <summary>
+    /// Optional library author.
+    /// </summary>
     public string? Author { get; set; }
+
+    /// <summary>
+    /// Optional tags for discovery and cataloging.
+    /// </summary>
     public string[]? Tags { get; set; }
 
+    /// <summary>
+    /// Creates a <see cref="LibraryManifest"/> for the provided library type.
+    /// </summary>
+    /// <param name="libraryType">The library type to read attributes from.</param>
     public LibraryManifest ToManifest(Type libraryType)
     {
         // Collect dependency attributes
@@ -155,12 +196,39 @@ public class LibraryManifestAttribute : Attribute
 /// </summary>
 public class LibraryManifest
 {
+    /// <summary>
+    /// Library identifier.
+    /// </summary>
     public required string Id { get; set; }
+
+    /// <summary>
+    /// Library display name.
+    /// </summary>
     public required string Name { get; set; }
+
+    /// <summary>
+    /// Library version string.
+    /// </summary>
     public required string Version { get; set; }
+
+    /// <summary>
+    /// Optional library description.
+    /// </summary>
     public string? Description { get; set; }
+
+    /// <summary>
+    /// Optional library author.
+    /// </summary>
     public string? Author { get; set; }
+
+    /// <summary>
+    /// Declared dependencies for the library.
+    /// </summary>
     public LibraryDependency[] Dependencies { get; set; } = Array.Empty<LibraryDependency>();
+
+    /// <summary>
+    /// Tags describing the library.
+    /// </summary>
     public string[] Tags { get; set; } = Array.Empty<string>();
 }
 
@@ -236,20 +304,43 @@ public enum HealthStatusLevel
 /// </summary>
 public class HealthStatus
 {
+    /// <summary>
+    /// Overall health status level.
+    /// </summary>
     public HealthStatusLevel Status { get; set; }
+
+    /// <summary>
+    /// Human-readable health message.
+    /// </summary>
     public string Message { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Optional structured data associated with the health check.
+    /// </summary>
     public Dictionary<string, object>? Data { get; set; }
 
+    /// <summary>
+    /// Creates a healthy status.
+    /// </summary>
+    /// <param name="message">Optional message describing the healthy state.</param>
     public static HealthStatus Healthy(string message = "Healthy")
     {
         return new HealthStatus { Status = HealthStatusLevel.Healthy, Message = message };
     }
 
+    /// <summary>
+    /// Creates a degraded status.
+    /// </summary>
+    /// <param name="message">Message describing the degraded state.</param>
     public static HealthStatus Degraded(string message)
     {
         return new HealthStatus { Status = HealthStatusLevel.Degraded, Message = message };
     }
 
+    /// <summary>
+    /// Creates an unhealthy status.
+    /// </summary>
+    /// <param name="message">Message describing the unhealthy state.</param>
     public static HealthStatus Unhealthy(string message)
     {
         return new HealthStatus { Status = HealthStatusLevel.Unhealthy, Message = message };

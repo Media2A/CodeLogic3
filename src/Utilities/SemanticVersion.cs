@@ -6,10 +6,27 @@ namespace CodeLogic.Utilities;
 /// </summary>
 public class SemanticVersion : IComparable<SemanticVersion>
 {
+    /// <summary>
+    /// Major version component.
+    /// </summary>
     public int Major { get; }
+
+    /// <summary>
+    /// Minor version component.
+    /// </summary>
     public int Minor { get; }
+
+    /// <summary>
+    /// Patch version component.
+    /// </summary>
     public int Patch { get; }
 
+    /// <summary>
+    /// Creates a semantic version from its components.
+    /// </summary>
+    /// <param name="major">Major version component.</param>
+    /// <param name="minor">Minor version component.</param>
+    /// <param name="patch">Patch version component.</param>
     public SemanticVersion(int major, int minor, int patch)
     {
         if (major < 0 || minor < 0 || patch < 0)
@@ -74,18 +91,33 @@ public class SemanticVersion : IComparable<SemanticVersion>
         return Patch.CompareTo(other.Patch);
     }
 
+    /// <summary>
+    /// Determines whether one version is greater than another.
+    /// </summary>
     public static bool operator >(SemanticVersion a, SemanticVersion b)
         => a.CompareTo(b) > 0;
 
+    /// <summary>
+    /// Determines whether one version is less than another.
+    /// </summary>
     public static bool operator <(SemanticVersion a, SemanticVersion b)
         => a.CompareTo(b) < 0;
 
+    /// <summary>
+    /// Determines whether one version is greater than or equal to another.
+    /// </summary>
     public static bool operator >=(SemanticVersion a, SemanticVersion b)
         => a.CompareTo(b) >= 0;
 
+    /// <summary>
+    /// Determines whether one version is less than or equal to another.
+    /// </summary>
     public static bool operator <=(SemanticVersion a, SemanticVersion b)
         => a.CompareTo(b) <= 0;
 
+    /// <summary>
+    /// Determines whether two versions are equal.
+    /// </summary>
     public static bool operator ==(SemanticVersion? a, SemanticVersion? b)
     {
         if (ReferenceEquals(a, b)) return true;
@@ -93,14 +125,26 @@ public class SemanticVersion : IComparable<SemanticVersion>
         return a.CompareTo(b) == 0;
     }
 
+    /// <summary>
+    /// Determines whether two versions are not equal.
+    /// </summary>
     public static bool operator !=(SemanticVersion? a, SemanticVersion? b)
         => !(a == b);
 
+    /// <summary>
+    /// Determines whether this instance equals another object.
+    /// </summary>
     public override bool Equals(object? obj)
         => obj is SemanticVersion other && this == other;
 
+    /// <summary>
+    /// Returns a hash code for this version.
+    /// </summary>
     public override int GetHashCode()
         => HashCode.Combine(Major, Minor, Patch);
 
+    /// <summary>
+    /// Returns the version in "major.minor.patch" format.
+    /// </summary>
     public override string ToString() => $"{Major}.{Minor}.{Patch}";
 }

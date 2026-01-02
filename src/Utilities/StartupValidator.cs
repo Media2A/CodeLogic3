@@ -155,6 +155,13 @@ public class StartupValidator
 /// </summary>
 public class ValidationResult
 {
+    /// <summary>
+    /// Indicates whether startup validation succeeded.
+    /// </summary>
     public bool IsSuccess { get; init; }
+
+    /// <summary>
+    /// Error message when validation fails.
+    /// </summary>
     public string? ErrorMessage { get; init; }
 }

@@ -17,6 +17,11 @@ public class LibraryManager
     private readonly List<LoadedLibrary> _libraries = new();
     private readonly Dictionary<string, ILibrary> _librariesById = new();
 
+    /// <summary>
+    /// Creates a new library manager using the provided options and configuration.
+    /// </summary>
+    /// <param name="options">Framework options for path resolution.</param>
+    /// <param name="config">Framework configuration settings.</param>
     public LibraryManager(CodeLogicOptions options, CodeLogicConfiguration config)
     {
         _options = options;
@@ -476,9 +481,28 @@ public class LibraryManager
 /// </summary>
 public class LoadedLibrary
 {
+    /// <summary>
+    /// The loaded library instance.
+    /// </summary>
     public required ILibrary Instance { get; init; }
+
+    /// <summary>
+    /// Manifest metadata for the library.
+    /// </summary>
     public required LibraryManifest Manifest { get; init; }
+
+    /// <summary>
+    /// Assembly path used to load the library.
+    /// </summary>
     public required string AssemblyPath { get; init; }
+
+    /// <summary>
+    /// Timestamp when the library was loaded.
+    /// </summary>
     public DateTime LoadedAt { get; init; }
+
+    /// <summary>
+    /// Library context, populated after configuration.
+    /// </summary>
     public LibraryContext? Context { get; set; }
 }

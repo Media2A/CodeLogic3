@@ -25,6 +25,10 @@ public class ConfigurationManager : IConfigurationManager
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
     };
 
+    /// <summary>
+    /// Creates a configuration manager rooted at a component base directory.
+    /// </summary>
+    /// <param name="baseDirectory">Directory containing configuration files.</param>
     public ConfigurationManager(string baseDirectory)
     {
         _baseDirectory = baseDirectory;
@@ -43,6 +47,9 @@ public class ConfigurationManager : IConfigurationManager
         _registered[type] = subConfigName ?? string.Empty;
     }
 
+    /// <summary>
+    /// Gets the loaded configuration instance for a type.
+    /// </summary>
     public T Get<T>() where T : ConfigModelBase, new()
     {
         var type = typeof(T);
@@ -72,6 +79,9 @@ public class ConfigurationManager : IConfigurationManager
         return Path.Combine(_baseDirectory, fileName);
     }
 
+    /// <summary>
+    /// Generates a default configuration file if it does not exist.
+    /// </summary>
     public async Task GenerateDefaultAsync<T>() where T : ConfigModelBase, new()
     {
         var configPath = GetConfigFilePath<T>();
@@ -83,6 +93,9 @@ public class ConfigurationManager : IConfigurationManager
         await SaveAsync(defaultConfig);
     }
 
+    /// <summary>
+    /// Loads a configuration file, generating defaults if missing.
+    /// </summary>
     public async Task LoadAsync<T>() where T : ConfigModelBase, new()
     {
         var type = typeof(T);
@@ -113,6 +126,9 @@ public class ConfigurationManager : IConfigurationManager
         _configurations[type] = config;
     }
 
+    /// <summary>
+    /// Saves a configuration instance to its corresponding file.
+    /// </summary>
     public async Task SaveAsync<T>(T config) where T : ConfigModelBase, new()
     {
         var configPath = GetConfigFilePath<T>();

@@ -38,7 +38,7 @@ public static class CodeLogic
         configure?.Invoke(_options);
 
         // Check for first run
-        if (FirstRunManager.IsFirstRun())
+        if (FirstRunManager.IsFirstRun(_options))
         {
             Console.WriteLine();
             var firstRunResult = await FirstRunManager.InitializeAsync(_options);
@@ -311,8 +311,23 @@ public static class Libs
 /// </summary>
 public class InitializationResult
 {
+    /// <summary>
+    /// Indicates whether initialization completed successfully.
+    /// </summary>
     public bool Success { get; set; }
+
+    /// <summary>
+    /// Indicates whether the current run is the first run initialization path.
+    /// </summary>
     public bool IsFirstRun { get; set; }
+
+    /// <summary>
+    /// Indicates whether the host should exit after initialization.
+    /// </summary>
     public bool ShouldExit { get; set; }
+
+    /// <summary>
+    /// Human-readable status or error message from initialization.
+    /// </summary>
     public string Message { get; set; } = string.Empty;
 }
