@@ -244,7 +244,7 @@ public static class CodeLogic
 
 /// <summary>
 /// Static class for accessing loaded libraries.
-/// Usage: Libraries.Get<MySQL2Library>()
+/// Usage: Libraries.Get&lt;MySQL2Library&gt;()
 /// </summary>
 public static class Libs
 {
@@ -265,7 +265,7 @@ public static class Libs
     /// <summary>
     /// Manually loads a specific library by type.
     /// Use this for explicit library loading instead of auto-discovery.
-    /// Example: await Libs.LoadAsync<MySQL2Library>();
+    /// Example: await Libs.LoadAsync&lt;MySQL2Library&gt;();
     /// </summary>
     public static async Task<bool> LoadAsync<T>() where T : class, ILibrary, new()
     {

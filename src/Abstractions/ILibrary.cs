@@ -294,8 +294,19 @@ public class LibraryContext
 /// </summary>
 public enum HealthStatusLevel
 {
+    /// <summary>
+    /// The library is operating normally.
+    /// </summary>
     Healthy,
+    
+    /// <summary>
+    /// The library is operating but with reduced functionality.
+    /// </summary>
     Degraded,
+    
+    /// <summary>
+    /// The library is not functioning properly.
+    /// </summary>
     Unhealthy
 }
 

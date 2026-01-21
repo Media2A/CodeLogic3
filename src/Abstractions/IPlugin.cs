@@ -203,6 +203,11 @@ public class PluginLoadContext : AssemblyLoadContext
         _resolver = new AssemblyDependencyResolver(pluginPath);
     }
 
+    /// <summary>
+    /// Loads an assembly by name from the plugin's dependency resolver.
+    /// </summary>
+    /// <param name="assemblyName">The name of the assembly to load.</param>
+    /// <returns>The loaded assembly, or null if not found.</returns>
     protected override Assembly? Load(AssemblyName assemblyName)
     {
         var assemblyPath = _resolver.ResolveAssemblyToPath(assemblyName);
@@ -214,6 +219,11 @@ public class PluginLoadContext : AssemblyLoadContext
         return null;
     }
 
+    /// <summary>
+    /// Loads an unmanaged DLL by name from the plugin's dependency resolver.
+    /// </summary>
+    /// <param name="unmanagedDllName">The name of the unmanaged DLL to load.</param>
+    /// <returns>A pointer to the loaded DLL, or IntPtr.Zero if not found.</returns>
     protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
     {
         var libraryPath = _resolver.ResolveUnmanagedDllToPath(unmanagedDllName);

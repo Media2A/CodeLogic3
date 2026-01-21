@@ -10,6 +10,7 @@
     <Version>3.0.0</Version>
     <Authors>CodeLogic Team</Authors>
     <Description>CodeLogic 3.0 - Modern micro-service style plugin framework for .NET</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
